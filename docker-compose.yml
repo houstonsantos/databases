@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+   postgresql:
+      build:
+         context: .
+         dockerfile: dockerfile.postgres
+      labels:
+         author: "Houston Santos - houston_santos@hotmail.com"
+      container_name: postgres
+      healthcheck:
+         test: ["CMD", "pg_isready", "-U", "postgres"]
+         interval: 5s
+         retries: 5
+      environment:
+         TZ: ${TIMEZONE}
+         DB_ADM_USER: ${DB_ADM_USER}
+         DB_ADM_PASS: ${DB_ADM_PASS}
+         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+         #POSTGRES_INITDB_ARGS: "--encoding=WIN1252 --locale=C --username=postgres"
+      restart: on-failure
+      volumes:
+         - postgresql:/var/lib/postgresql/data
+      ports:
+         - 5432:5432
+      networks:
+         databases:
+
+   mssql:
+      build:
+         context: .
+         dockerfile: dockerfile.mssql
+      labels:
+         author: "Houston Santos - houston_santos@hotmail.com"
+      container_name: mssql
+      #healthcheck:
+         #test: ["CMD", "pg_isready", "-U", "postgres"]
+         #interval: 5s
+         #retries: 5
+      environment:
+         TZ: ${TIMEZONE}
+         ACCEPT_EULA: ${ACCEPT_EULA}
+         MSSQL_PID: ${MSSQL_PID}
+         SA_PASSWORD: ${SA_PASSWORD}
+         MSSQL_AGENT_ENABLED: true
+      restart: on-failure
+      volumes:
+         - mssql:/var/opt/mssql
+      ports:
+         - 1433:1433
+      networks:
+         databases:
+
+volumes:
+   postgresql:
+      name: postgresql
+   mssql:
+      name: mssql
+
+networks:
+   databases:
+      name: databases
