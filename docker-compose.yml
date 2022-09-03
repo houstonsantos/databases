@@ -51,6 +51,41 @@ services:
       networks:
          databases:
 
+   mysql:
+      image: mysql:latest
+      labels:
+         author: "Houston Santos - houston_santos@hotmail.com"
+      container_name: mysql
+      restart: always
+      environment:
+         TZ: "America/Recife"
+         MYSQL_ROOT_PASSWORD: 123456
+      volumes:
+         - mysql:/var/lib/mysql
+      ports:
+         - 3306:3306
+      networks:
+         - zabbix
+   
+   adminer:
+      image: adminer:latest
+      labels:
+         author: "Houston Santos - houston_santos@hotmail.com"
+      container_name: adminer
+      depends_on:
+         mysql:
+            condition: service_started
+      restart: always
+      environment:
+         TZ: "America/Recife"
+         ADMINER_DEFAULT_SERVER: mysql
+      volumes:
+         - adminer:/var/www/html
+      ports:
+         - 8081:8080
+      networks:
+         - zabbix
+
 volumes:
    postgresql:
       name: postgresql
