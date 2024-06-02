@@ -40,7 +40,7 @@ Para build do projeto basta executar o comando abaixo na raiz do projeto.
   <img src="img/01.png" width="60%">
 </p>
 
-Ao final do build do projeto você deve ter esta estrutura da imagem acima, com isso você pode utilizar o container que quizer, parando os outros, tendo uma única instância do banco que precisar. Note a ideia aqui é proporcionar uma rede de databases.
+Ao final do build do projeto você deve ter esta estrutura da imagem a cima, com isso você pode utilizar o container que quizer, parando os outros, tendo uma única instância do banco que precisar. Note a ideia aqui é proporcionar uma rede de databases.
 
 Como SGDB gosto de utilizar pgAdmin para o PostgreSQL, o Azure Data Studio para MSSQL Server e Adminer para o MySQL este último incluso no projeto.
 
