@@ -1,8 +1,9 @@
 # Imagem Docker
-FROM postgres:13.4
+FROM postgres:14.5
+#FROM postgres:13.4
 
 # Copiando script de ciação do database
-COPY build/db_postgresql.sh /docker-entrypoint-initdb.d
+#COPY postgres/db_postgresql.sh /docker-entrypoint-initdb.d
 
 # Expondo porta de conexão Postgres
 EXPOSE 5432

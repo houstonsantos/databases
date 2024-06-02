@@ -4,7 +4,7 @@ services:
    postgresql:
       build:
          context: .
-         dockerfile: dockerfile.postgres
+         dockerfile: postgres/dockerfile.postgres
       labels:
          author: "Houston Santos - houston_santos@hotmail.com"
       container_name: postgres
@@ -12,24 +12,25 @@ services:
          test: ["CMD", "pg_isready", "-U", "postgres"]
          interval: 5s
          retries: 5
+      restart: on-failure
       environment:
          TZ: ${TIMEZONE}
          DB_ADM_USER: ${DB_ADM_USER}
          DB_ADM_PASS: ${DB_ADM_PASS}
          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-         #POSTGRES_INITDB_ARGS: "--encoding=WIN1252 --locale=C --username=postgres"
-      restart: on-failure
+         POSTGRES_INITDB_ARGS: "--encoding=WIN1252 --locale=C --username=postgres"
       volumes:
-         - postgresql:/var/lib/postgresql/data
+         - postgres:/var/lib/postgresql/data
       ports:
          - 5432:5432
       networks:
          databases:
+            ipv4_address: ${IP_POSTGRES}
 
    mssql:
       build:
          context: .
-         dockerfile: dockerfile.mssql
+         dockerfile: mssql/dockerfile.mssql
       labels:
          author: "Houston Santos - houston_santos@hotmail.com"
       container_name: mssql
@@ -50,22 +51,26 @@ services:
          - 1433:1433
       networks:
          databases:
+            ipv4_address: ${IP_MSSQL}
 
    mysql:
-      image: mysql:latest
+      image: mysql
       labels:
          author: "Houston Santos - houston_santos@hotmail.com"
       container_name: mysql
       restart: always
       environment:
-         TZ: "America/Recife"
-         MYSQL_ROOT_PASSWORD: 123456
+         TZ: ${TIMEZONE}
+         MYSQL_USER: ${MYSQL_USER}
+         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       volumes:
          - mysql:/var/lib/mysql
       ports:
          - 3306:3306
       networks:
-         - zabbix
+         databases:
+            ipv4_address: ${IP_MYSQL}
    
    adminer:
       image: adminer:latest
@@ -77,21 +82,27 @@ services:
             condition: service_started
       restart: always
       environment:
-         TZ: "America/Recife"
-         ADMINER_DEFAULT_SERVER: mysql
-      volumes:
-         - adminer:/var/www/html
+         TZ: ${TIMEZONE}
+         ADMINER_DEFAULT_SERVER: ${ADMINER_DEFAULT_SERVER}
       ports:
          - 8081:8080
       networks:
-         - zabbix
+         databases:
+            ipv4_address: ${IP_ADMINER}
 
 volumes:
-   postgresql:
-      name: postgresql
+   postgres:
+      name: postgres
    mssql:
       name: mssql
+   mysql:
+      name: mysql
 
 networks:
    databases:
       name: databases
+      ipam:
+         driver: default
+         config:
+            - subnet: ${SUBNET}
+              gateway: ${GATEWAY}
