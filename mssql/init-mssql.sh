@@ -2,9 +2,9 @@
 
 
 if [ "$1" = 'mssql' ]; then
-    # Criando database
+    # Criando database.
     /opt/mssql/db_mssql.sh
 
-    # Iniciando serviço MSSQL
+    # Iniciando serviço MSSQL.
     exec /opt/mssql/bin/sqlservr
 fi

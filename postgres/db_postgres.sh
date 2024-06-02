@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-# Criação da database para o protheus, postgres
+# Criação da database rules e tablespace para o protheus, ou qualquer outro sistema no postgres.
 mkdir /var/lib/postgresql/data/protheus
 chown postgres:postgres /var/lib/postgresql/data/protheus
 
