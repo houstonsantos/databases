@@ -5,7 +5,7 @@ services:
    postgresql:
       build:
          context: .
-         dockerfile: postgres/dockerfile.postgres
+         dockerfile: postgres/dockerfile
       labels:
          author: "Houston Santos - houston_santos@hotmail.com"
       container_name: postgres
@@ -34,7 +34,7 @@ services:
    mssql:
       build:
          context: .
-         dockerfile: mssql/dockerfile.mssql
+         dockerfile: mssql/dockerfile
       labels:
          author: "Houston Santos - houston_santos@hotmail.com"
       container_name: mssql
